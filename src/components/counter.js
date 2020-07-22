@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   decrement,
@@ -8,30 +8,30 @@ import {
   incrementByAmount,
   reset,
   selectCount,
-} from '../lib/slices/counterSlice'
+} from '../../lib/slices/counterSlice';
 
 const Counter = () => {
-  const dispatch = useDispatch()
-  const count = useSelector(selectCount)
-  const [incrementAmount, setIncrementAmount] = useState('2')
+  const dispatch = useDispatch();
+  const count = useSelector(selectCount);
+  const [incrementAmount, setIncrementAmount] = useState('2');
 
   function dispatchIncrement() {
-    dispatch(increment())
+    dispatch(increment());
   }
   function dispatchDecrement() {
-    dispatch(decrement())
+    dispatch(decrement());
   }
   function dispatchReset() {
-    dispatch(reset())
+    dispatch(reset());
   }
   function changeIncrementAmount(event) {
-    setIncrementAmount(event.target.value)
+    setIncrementAmount(event.target.value);
   }
   function dispatchIncrementByAmount() {
-    dispatch(incrementByAmount(Number(incrementAmount) || 0))
+    dispatch(incrementByAmount(Number(incrementAmount) || 0));
   }
   function dispatchIncrementAsync() {
-    dispatch(incrementAsync(Number(incrementAmount) || 0))
+    dispatch(incrementAsync(Number(incrementAmount) || 0));
   }
 
   return (
@@ -149,7 +149,7 @@ const Counter = () => {
         }
       `}</style>
     </>
-  )
-}
+  );
+};
 
-export default Counter
+export default Counter;
