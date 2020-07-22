@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { firebaseReducer } from 'react-redux-firebase';
-import { firestoreReducer } from 'redux-firestore'; // <- needed if using firestore
+import { firestoreReducer } from 'redux-firestore';
 
 import counterReducer from '../lib/slices/counterSlice';
 

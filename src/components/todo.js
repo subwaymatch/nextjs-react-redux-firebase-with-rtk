@@ -1,23 +1,50 @@
-import React from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useFirestoreConnect } from 'react-redux-firebase';
+import { useFirestoreConnect, useFirestore } from 'react-redux-firebase';
 
-export default function Todos() {
-  useFirestoreConnect([
-    { collection: 'todos' }, // or 'todos'
-  ]);
+function TodosComponent(props) {
+  const firestore = useFirestore();
+  useFirestoreConnect('todos');
+
+  const [newTodoText, setNewTodoText] = useState('');
 
   const todos = useSelector((state) => state.firestore.ordered.todos);
 
-  console.log(todos);
-
   return (
     <div>
-      <h1>Todos</h1>
+      <h1>Todos Component</h1>
 
-      {!todos && <div>Loading Items</div>}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
 
-      {todos && todos.map((todo) => <div key={todo.id}>{todo.text}</div>)}
+          firestore
+            .collection('todos')
+            .add({
+              text: newTodoText,
+            })
+            .then(() => {
+              console.log('Then it was done');
+            });
+          e.preventDefault();
+          setNewTodoText('');
+        }}
+      >
+        <input
+          type="text"
+          value={newTodoText}
+          onChange={(e) => {
+            setNewTodoText(e.target.value);
+          }}
+        />
+        <input type="submit" disabled={!newTodoText} value="Add Todo" />
+      </form>
+
+      {todos
+        ? todos.map((todo) => <div key={todo.id}>{todo.text}</div>)
+        : 'Loading'}
     </div>
   );
 }
+
+export default TodosComponent;
