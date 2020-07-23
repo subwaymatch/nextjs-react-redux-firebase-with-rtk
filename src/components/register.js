@@ -2,20 +2,20 @@ import { useState } from 'react';
 import { useFirebase } from 'react-redux-firebase';
 import styles from './auth.module.scss';
 
-export default function AuthRegistrationComponent() {
+export default function AuthRegistrationComponent({ redirectUrl }) {
   const firebase = useFirebase();
 
   const [newEmail, setNewEmail] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [newUsername, setNewUsername] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const createNewUser = async ({ email, password, username }) => {
+  const createNewUser = async ({ email, password }) => {
     try {
-      const newUser = await firebase.createUser(
-        { email, password },
-        { username, email }
-      );
+      const newUser = await firebase.createUser({ email, password }, { email });
+
+      console.log('newUser created');
+      console.log(newUser);
+      console.log(firebase.auth().currentUser);
     } catch (err) {
       console.log('Error');
       console.log(err);
@@ -25,7 +25,7 @@ export default function AuthRegistrationComponent() {
   };
 
   return (
-    <div className={styles.authComponent}>
+    <div className={styles.authForm}>
       <h1>Register</h1>
 
       <form
@@ -36,7 +36,6 @@ export default function AuthRegistrationComponent() {
           createNewUser({
             email: newEmail,
             password: newPassword,
-            username: newUsername,
           });
         }}
       >
@@ -48,17 +47,6 @@ export default function AuthRegistrationComponent() {
             value={newEmail}
             onChange={(e) => setNewEmail(e.target.value)}
             placeholder="your@email.com"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="newUsername">Username</label>
-          <input
-            type="text"
-            id="newUsername"
-            value={newUsername}
-            onChange={(e) => setNewUsername(e.target.value)}
-            placeholder="username"
           />
         </div>
 
