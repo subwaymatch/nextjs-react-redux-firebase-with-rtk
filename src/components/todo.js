@@ -10,6 +10,39 @@ function TodosComponent(props) {
 
   const todos = useSelector((state) => state.firestore.ordered.todos);
 
+  if (todos) {
+    const todo = todos[0];
+
+    console.log(
+      new Date(todo.createdAt.seconds * 1000).toLocaleDateString('en-US')
+    );
+  }
+
+  console.log(todos);
+
+  const addTodo = (todoText) => {
+    console.log(`addTodo at ${firestore.FieldValue.serverTimestamp()}`);
+
+    firestore
+      .collection('todos')
+      .add({
+        text: todoText,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() => {
+        console.log('Then it was done');
+      });
+  };
+
+  const deleteTodo = (todoId) => {
+    console.log(`deleteTodo(${todoId})`);
+
+    firestore.delete({
+      collection: 'todos',
+      doc: todoId,
+    });
+  };
+
   return (
     <div>
       <h1>Todos Component</h1>
@@ -17,16 +50,7 @@ function TodosComponent(props) {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-
-          firestore
-            .collection('todos')
-            .add({
-              text: newTodoText,
-            })
-            .then(() => {
-              console.log('Then it was done');
-            });
-          e.preventDefault();
+          addTodo(newTodoText);
           setNewTodoText('');
         }}
       >
@@ -41,7 +65,18 @@ function TodosComponent(props) {
       </form>
 
       {todos
-        ? todos.map((todo) => <div key={todo.id}>{todo.text}</div>)
+        ? todos.map((todo) => (
+            <div key={todo.id}>
+              <p>{todo.text}</p>
+              <button
+                onClick={() => {
+                  deleteTodo(todo.id);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          ))
         : 'Loading'}
     </div>
   );

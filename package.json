@@ -17,7 +17,8 @@
     "react-redux": "^7.2.0",
     "react-redux-firebase": "^3.6.0",
     "recompose": "^0.30.0",
-    "redux-firestore": "^0.13.0"
+    "redux-firestore": "^0.13.0",
+    "sass": "^1.26.10"
   },
   "license": "ISC"
 }
