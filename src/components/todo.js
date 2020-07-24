@@ -12,10 +12,6 @@ function TodosComponent(props) {
 
   if (todos) {
     const todo = todos[0];
-
-    console.log(
-      new Date(todo.createdAt.seconds * 1000).toLocaleDateString('en-US')
-    );
   }
 
   console.log(todos);
